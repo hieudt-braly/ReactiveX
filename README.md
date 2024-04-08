@@ -1,6 +1,5 @@
 # **ReactiveX**
--
-##I. Overview
+## I. Overview
 	1 thư viện cho phép xử lý bất đồng bộ (Asynchronous) và event-based programs
 	bằng các sử dụng các dãy obeservable.
 
@@ -11,12 +10,12 @@
 
 > Có chỗ gọi là "Functional reactive programming" -> Sai. RX có thể functional và reactive nhưng FRP là 1 hình thức khác. Điểm khác nhau lớn nhất là FRP thao tác trên các giá trị *thay đổi liên tục* theo thời gian còn RX thao tác trên 1 giá trị *cố định* được phát ra theo thời gian.
 
-##II. Observable
-###1. Definition
+## II. Observable
+### 1. Definition
 	Khác với lập trình thông thường, RX cho phép các task thực thi song song và kết quả sẽ trả về sau
 	cho các "Observer". Ta cần định nghĩa 1 cơ chế để nhận và thay đổi dữ liệu => "Observable" và rồi 
 	subcribe (đăng ký) "Observer" cho dữ liệu đó.
-###2. Why?
+### 2. Why?
 	RX Observable model cho phép bạn xử lý streams of async events với các operation đơn giản, linh hoạt
 	khiến việc sử dụng tập dữ liệu, items như các array.
 - Ưu điểm:
@@ -24,7 +23,7 @@
 	- Code dễ đọc hơn.
 	- Giảm bug. 
 
-###3. Mechanism (cơ chế)
+### 3. Mechanism (cơ chế)
 
 |   |Cách gọi bình thường | Trong Asynchronous model 
 | --- | ------------------- | -------------------------
