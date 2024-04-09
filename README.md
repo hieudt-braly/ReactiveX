@@ -124,3 +124,36 @@ làm cho Subject trở thành 1 bản "Hot" của Observable ban đầu.
 - `SubcribeOn(<thread>)`: Ở mặc định, Observable và tập hợp các operators sẽ chạy trên thread mà Subcribe() được gọi. Để thay đổi thread mặc định, ta sử dụng SubcribeOn() ở trong chuối cáci operators để thay đổi thread mà Observable thuộc về.
 - `ObserveOn(<thread>)`: Method này sẽ áp dụng các thread cụ thể cho những operators được gọi ở dưới nó. Các operator nằm dưới ObserveOn() sẽ chạy trên thread mà nó gọi tới.
 ![](https://reactivex.io/documentation/operators/images/schedulers.png)
+
+## VII. RxJava
+	RxJava: là RX sử dụng ngôn ngữ Java.
+	
+>RxJava cũng có những thành phần chính giống như Rx bao gồm Observable, Observer, Schedulers, Operators, Subcription...
+
+### Các thành phần chính
+1. Observable: Nguồn phát dữ liệu theo thời gian.
+2. Observer: Đối tượng nhận và xử lý các giá trị phát ra từ Observble.
+3. Operators: Phép biến đổi và xử lý dữ liệu.
+4. Scheduler: Quy định luồng cho các tác vụ.
+5. Disposable: Đăng ký và huỷ đăng ký. Cho phép quản lý vòng đời quá trình subcribe và giải phỏng tài nguyên khi không dùng đến.
+6. Subject: Observable + Observer. Có thể dùng để tương tác giữa Observable và Observer. 
+
+### Observable và Observer trong RxJava
+>Có 5 loại Observable và Observer tương ứng:
+
+Observable | Observer | # of emissions
+---------- | -------- | --------------
+Observable | Observer | Multiple or None
+Single | SingleObserver | 1
+Maybe | MabyeObserver | 1 or None
+Flowable | Observer | Multiple or none
+Completable | CompletableObserver | None (only Complete() or Error())
+
+## VIII. RxAndroid
+	RxAndroid là phiên bản Rx đặc biệt được phát triển riêng cho nền tảng Android dựa trên RxJava.
+	Do đó, các thành phần trong RxJava đều đúng với trong RxAndroid. Ngoài ra thì trong RxAndroid,
+	Schedulers sẽ được hỗ trợ thêm cho multithread giúp phân chia thread cho từng module phù hợp, 
+	dễ dàng hơn.
+- Schedulers.io(): Dành cho các tác vụ không tốn nhiều CPU như gọi mạng, đọc đĩa/ tệp, CRUD với data...
+- AndroidSchedulers.mainThread(): Cho phép xử lý trên Main Thread/ UI thread.
+- Schedulers.newThread(): Tạo 1 thread mới cho tác vụ cụ thể.
