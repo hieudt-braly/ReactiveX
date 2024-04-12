@@ -13,13 +13,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.reactivex.data.Animal
+import com.example.reactivex.data.RxSearchObservable
 import com.example.reactivex.data.Zoo
 import com.example.reactivex.databinding.ActivityMainBinding
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.functions.Predicate
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
@@ -51,6 +56,7 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+        setUpSearchObservable()
 
         Zoo.getAnimals()
             .subscribeOn(Schedulers.io())
@@ -65,6 +71,42 @@ class MainActivity : AppCompatActivity() {
             }, {
 
             })
+    }
+
+    @SuppressLint("CheckResult")
+    private fun setUpSearchObservable() {
+        RxSearchObservable.fromView(binding.svSearch)
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .filter(object :Predicate<String>{
+                override fun test(t: String): Boolean {
+                    return if(t.isEmpty()){
+                        binding.tvResult.text = ""
+                        false
+                    }else{
+                        true
+                    }
+                }
+            })
+            .distinctUntilChanged()
+            .switchMap{
+                dataFromNetwork(it)
+                    .doOnError{
+                    }
+                    .onErrorReturnItem("")
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object :Consumer<String>{
+                override fun accept(t: String) {
+                    binding.tvResult.text = t
+                }
+            })
+    }
+
+    private fun dataFromNetwork(query: String): Observable<String> {
+        return Observable.just(true)
+            .delay(2, TimeUnit.SECONDS)
+            .map { query }
     }
 
     private fun getObserverZoo(): Observer<Animal> {
